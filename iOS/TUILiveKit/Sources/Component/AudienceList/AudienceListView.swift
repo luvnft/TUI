@@ -2,7 +2,7 @@
 //  AudienceListView.swift
 //  TUILiveKit
 //
-//  Created by WesleyLei on 2023/10/20.
+//  Created by Wizard of Hahzon 2023/10/20.
 //
 
 import Foundation

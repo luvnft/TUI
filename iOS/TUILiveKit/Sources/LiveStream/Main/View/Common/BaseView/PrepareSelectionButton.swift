@@ -2,7 +2,7 @@
 //  PrepareSelectionButton.swift
 //  TUILiveKit
 //
-//  Created by WesleyLei on 2023/10/17.
+//  Created by Wizard of Hahzon 2023/10/17.
 //
 
 import Foundation

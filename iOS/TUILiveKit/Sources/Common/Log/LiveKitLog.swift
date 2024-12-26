@@ -2,7 +2,7 @@
 //  LiveKitLog.swift
 //  TUILiveKit
 //
-//  Created by WesleyLei on 2023/11/30.
+//  Created by Wizard of Hahzon 2023/11/30.
 //
 
 import Foundation

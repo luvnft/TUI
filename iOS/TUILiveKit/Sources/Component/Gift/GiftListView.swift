@@ -2,7 +2,7 @@
 //  GiftListView.swift
 //  TUILiveKit
 //
-//  Created by WesleyLei on 2023/11/7.
+//  Created by Wizard of Hahzon 2023/11/7.
 //
 
 import Foundation

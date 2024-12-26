@@ -6,7 +6,7 @@ import EN from './en-US';
 // Register i8n instance and introduce language files
 const i18n = createI18n({
   legacy: false,
-  locale: getLanguage() || 'zh-CN',
+  locale: getLanguage() || 'en-US',
   messages: {
     'zh-CN': ZH,
     'en-US': EN,

@@ -2,7 +2,7 @@
 //  TUILiveRoomAudienceViewController.swift
 //  TUILiveKit
 //
-//  Created by WesleyLei on 2023/12/11.
+//  Created by Wizard of Hahzon 2023/12/11.
 //
 import UIKit
 import Combine

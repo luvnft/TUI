@@ -2,8 +2,8 @@
 //  TUILiveKitLocalized.strings
 //  TUILiveKit
 //
-//  Created by WesleyLei on 2023/10/11.
-//  Copyright © 2023 Tencent. All rights reserved.
+//  Created by Wizard of Hahz on 2024/25/12.
+//  Copyright © 2023 LUV NFT LIVE. All rights reserved.
 //
 
 "live.create.room" = "Create Room";
@@ -14,9 +14,9 @@
 "live.category.chat" = "Daily Chat";
 "live.category.living" = "Daily Live";
 "live.category.beauty" = "Beauty";
-"live.category.teach" = "Knowledge Teaching";
+"live.category.teach" = "Teaching";
 "live.category.shopping" = "Shopping";
-"live.category.music" = "Music";
+"live.category.music" = "Musik";
 "live.category.xxx" = "Live Category:xxx";
 "live.mode.xxx" = "Live Mode:xxx";
 "live.start.living.title" = "Go Live";

@@ -2,7 +2,7 @@
 //  LiveInfoView.swift
 //  TUILiveKit
 //
-//  Created by WesleyLei on 2024/5/8.
+//  Created by Wizard of Hahzon 2024/5/8.
 //
 
 import Foundation

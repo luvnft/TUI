@@ -2,7 +2,7 @@
 //  NSObject+LiveKit.m
 //  TUIRoomKit
 //
-//  Created by WesleyLei on 2023/10/11.
+//  Created by Wizard of Hahz on 2024/25/12.
 //  Copyright © 2023 Tencent. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  AnchorLinkControlPanel.swift
 //  TUILiveKit
 //
-//  Created by WesleyLei on 2023/10/25.
+//  Created by Wizard of Hahzon 2023/10/25.
 //
 
 import Foundation

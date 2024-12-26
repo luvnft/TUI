@@ -2,7 +2,7 @@
 //  AnchorPrepareView.swift
 //  TUILiveKit
 //
-//  Created by WesleyLei on 2023/10/16.
+//  Created by Wizard of Hahzon 2023/10/16.
 //
 
 import Foundation

@@ -12,7 +12,7 @@ import LibGenerateTestUserSig from './lib-generate-test-usersig-es.min';
  *
  */
 
-export const SDKAPPID = "20016214";
+export const SDKAPPID = 20016214;
 
 /**
  * Encryption key for calculating signature, which can be obtained in the following steps:

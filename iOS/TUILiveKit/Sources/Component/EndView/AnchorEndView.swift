@@ -2,7 +2,7 @@
 //  AnchorEndView.swift
 //  TUILiveKit
 //
-//  Created by WesleyLei on 2024/4/17.
+//  Created by Wizard of Hahzon 2024/4/17.
 //
 
 import TUICore
