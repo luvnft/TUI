@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">TUILiveKit</string>
-    <string name="app_main_title">Tencent \n Real-Time \n Communication</string>
+    <string name="app_name">LUV NFT LIVE</string>
+    <string name="app_main_title">LUV NFT \n Real-Time \n Communication</string>
     <string name="app_user_id">UserId</string>
     <string name="app_hint_user_id">Enter a userId</string>
     <string name="app_btn_login">Log In</string>
