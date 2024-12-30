@@ -35,7 +35,7 @@ export function getLanguage() {
  * @returns Theme
  */
 export function getTheme() {
-  let storedTheme = localStorage.getItem('tuiLive-currentTheme') || 'LIGHT';
+  let storedTheme = localStorage.getItem('tuiLive-currentTheme') || 'DARK';
 
   if (storedTheme === 'white') {
     storedTheme = 'LIGHT';
