@@ -20,7 +20,7 @@
 
     <string name="app_stream_number">Stream Id</string>
     <string name="app_please_input_stream_number">Enter a Stream ID</string>
-    <string name="app_join_live">Join live room</string>
+    <string name="app_join_live">Join live 🚪 room</string>
     <string name="app_start_live_stream">GO LIVE</string>
     <string name="app_toast_login_success">Logged in</string>
     <string name="app_room_list">Live Room List</string>
@@ -30,8 +30,8 @@
     <string name="livekit_bottom_bar_personal_center">Me</string>
     <string name="app_change_name_title">Name</string>
     <string name="app_name_save">Save</string>
-    <string name="app_title_me">My Profile</string>
-    <string name="app_tips_title">Warm Tips</string>
+    <string name="app_title_me">ℹ️ AM</string>
+    <string name="app_tips_title">🫶 Tips</string>
     <string name="app_logout_tips">Are you sure you want to log out?</string>
     <string name="app_logout">Yes</string>
     <string name="app_cancel">Cancel</string>

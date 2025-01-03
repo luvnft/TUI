@@ -26,7 +26,7 @@
     <string name="app_room_list">Live room list</string>
     <string name="app_start_voice_live">Start audio live</string>
     <string name="app_follow_count">Follow</string>
-    <string name="app_fans_count">Fans</string>
+    <string name="app_fans_count">Tribe</string>
     <string name="livekit_bottom_bar_personal_center">I AM</string>
     <string name="app_change_name_title">Set name</string>
     <string name="app_name_save">Save</string>
