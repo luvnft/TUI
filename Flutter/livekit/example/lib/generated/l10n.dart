@@ -50,10 +50,10 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Tencent RTC`
+  /// `LUV NFT LIVE`
   String get app_trtc {
     return Intl.message(
-      'Tencent RTC',
+      'LUV NFT LIVE',
       name: 'app_trtc',
       desc: '',
       args: [],
