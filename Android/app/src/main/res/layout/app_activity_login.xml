@@ -20,7 +20,7 @@
             android:layout_width="82dp"
             android:layout_height="82dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/app_tencent_cloud_logo" />
+            android:src="@drawable/luv_nft_live" />
 
         <TextView
             android:layout_width="wrap_content"
