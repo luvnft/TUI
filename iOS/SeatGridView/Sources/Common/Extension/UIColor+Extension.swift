@@ -2,7 +2,7 @@
 //  UIColor+Extension.swift
 //  SeatGridView
 //
-//  Created by krabyu on 2024/10/28.
+//  Created by Wizard of Hahz on 2024/10/28.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import RTCCommon
 
 extension UIColor {
     /// colors in the interaction specification
-    static let b1 = themColor("#1C66E5")
+    static let b1 = themColor("#8347E5")
     static let b2 = themColor("#00E5E5")
     static let c1 = themColor("#00C2A8")
     static let c2 = themColor("#6C54E8")

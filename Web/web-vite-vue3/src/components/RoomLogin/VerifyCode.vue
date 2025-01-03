@@ -116,7 +116,7 @@ defineExpose({ startCountDown, clear });
       // border:1px solid #000;
         &.send-btn{
             cursor:pointer;
-            color: #1C66E5;
+            color: #8347E5;
             font-size: 16px;
         }
         &.static{

@@ -89,7 +89,7 @@ extension MainViewController {
     private func setupNavigation() {
         let logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         logoImageView.contentMode = .scaleAspectFit
-        logoImageView.image = UIImage(named: "main_nav_logo")
+        logoImageView.image = UIImage(named: "luv_nft_live")
         let logoImageItem = UIBarButtonItem(customView: logoImageView)
         
         let logoTitleItem = UIBarButtonItem(title: "TUILiveKit", style: .plain, target: nil, action: nil)

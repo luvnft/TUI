@@ -2,10 +2,10 @@
   TUILiveKitAppLocalized.strings
   TUILiveKitApp
 
-  Created by krabyu on 2023/10/18.
+  Created by Wizard of Hahz on 2023/10/18.
   
 */
-"TUILiveKitApp.Login.tencentcloud" = "Tencent Real-Time Communication";
+"TUILiveKitApp.Login.tencentcloud" = "LUV NFT LIVE Real-Time Communication";
 "TUILiveKitApp.Login.enterphonenumber" = "Enter a User Name";
 "TUILiveKitApp.Login.enterverificationcode" = "Enter a verification code";
 "TUILiveKitApp.Login.getverificationcode" = "Get";
@@ -41,7 +41,7 @@
 "TUILiveKitApp.Main.Save" = "Save";
 "TUILiveKitApp.Main.Operate.Success" = "Successful operation";
 
-"TUILiveKitApp.Test.SeatGridView.universalLayout.xxx" = "Unviersal：xxx";
+"TUILiveKitApp.Test.SeatGridView.universalLayout.xxx" = "Universal：xxx";
 "TUILiveKitApp.Test.SeatGridView.seatCount" = "SeatCount";
 "TUILiveKitApp.Test.SeatGridView.freeLayout" = "FreeLayout";
 "TUILiveKitApp.Test.SeatGridView.line.xxx" = "line xxx";
