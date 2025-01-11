@@ -26,6 +26,7 @@ class VoiceRoomRootView: RTCBaseView {
     private let isOwner: Bool
     private let giftCacheService = TUIGiftStore.shared.giftCacheService
     private var cancellableSet = Set<AnyCancellable>()
+    private let likeManager: LikeManager
     
     private let backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView(frame: .zero)
@@ -48,11 +49,7 @@ class VoiceRoomRootView: RTCBaseView {
         return view
     }()
     
-    private lazy var bottomMenu: VRBottomMenuView = {
-        let view = VRBottomMenuView(manager: manager, routerManager: routerManager, coreView: seatGridView, isOwner: isOwner)
-        view.delegate = self
-        return view
-    }()
+    private lazy var bottomMenu = VRBottomMenuView(manager: manager, routerManager: routerManager, coreView: seatGridView, isOwner: isOwner)
     
     private let muteMicrophoneButton: UIButton = {
         let button = UIButton(frame: .zero)
@@ -82,20 +79,8 @@ class VoiceRoomRootView: RTCBaseView {
     }()
     
     private lazy var giftDisplayView: GiftPlayView = {
-        let view = GiftPlayView(groupId: manager.roomState.roomId)
+        let view = GiftPlayView(roomId: manager.roomState.roomId)
         view.delegate = self
-        return view
-    }()
-    
-    lazy var giftListView: GiftListView = {
-        let view = GiftListView(groupId: manager.roomState.roomId)
-        view.delegate = self
-        view.setGiftList(TUIGiftStore.shared.giftList)
-        TUIGiftStore.shared.giftCloudServer.queryBalance { error, balance in
-            if error == .noError {
-                view.setBalance(balance)
-            }
-        }
         return view
     }()
     
@@ -107,6 +92,7 @@ class VoiceRoomRootView: RTCBaseView {
         self.manager = manager
         self.routerManager = routerManager
         self.isOwner = isCreate
+        self.likeManager = LikeManager(roomId: roomId)
         super.init(frame: frame)
         manager.update(roomId: roomId)
         if isCreate {
@@ -189,6 +175,7 @@ class VoiceRoomRootView: RTCBaseView {
         subscribeRoomState()
         subscribeUserState()
         subscribeSeatState()
+        subscribeSubject()
         muteMicrophoneButton.addTarget(self, action: #selector(muteMicrophoneButtonClick(sender:)), for: .touchUpInside)
     }
 }
@@ -348,25 +335,11 @@ extension VoiceRoomRootView {
     }
 }
 
-// MARK: - RouterViewProvider
-
-extension VoiceRoomRootView: VRRouterViewProvider {
-    func getRouteView(route: VRRoute) -> UIView? {
-        if route == .giftView {
-            giftListView.setGiftList(TUIGiftStore.shared.giftList)
-            return giftListView
-        } else {
-            return nil
-        }
-    }
-}
-
 // MARK: - Private
 
 extension VoiceRoomRootView {
     private func subscribeRoomState() {
         subscribeRoomBackgroundState()
-        subscribeRoomIdState()
         subscribeRoomOwnerState()
     }
     
@@ -386,19 +359,6 @@ extension VoiceRoomRootView {
                 guard let self = self else { return }
                 self.backgroundImageView.kf.setImage(with: URL(string: url), placeholder: UIImage.placeholderImage)
             })
-            .store(in: &cancellableSet)
-    }
-    
-    private func subscribeRoomIdState() {
-        manager.subscribeRoomState(StateSelector(keyPath: \.roomId))
-            .receive(on: RunLoop.main)
-            .sink { [weak self] roomId in
-                guard let self = self else { return }
-                if !roomId.isEmpty {
-                    self.giftListView.setRoomId(roomId: roomId)
-                    self.giftDisplayView.setRoomId(roomId: roomId)
-                }
-            }
             .store(in: &cancellableSet)
     }
     
@@ -479,6 +439,20 @@ extension VoiceRoomRootView {
     }
 }
 
+// MARK: - SubscribeSubject
+
+extension VoiceRoomRootView {
+    private func subscribeSubject() {
+        manager.likeSubject
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                likeManager.sendLike()
+            }
+            .store(in: &cancellableSet)
+    }
+}
+
 // MARK: - TopViewDelegate
 
 extension VoiceRoomRootView: VRTopViewDelegate {
@@ -513,13 +487,6 @@ extension VoiceRoomRootView: VRTopViewDelegate {
         case .audienceList:
             routerManager.router(action: .present(.recentViewer))
         }
-    }
-}
-
-// MARK: - VRBottomMenuViewDelegate
-extension VoiceRoomRootView: VRBottomMenuViewDelegate {
-    func likeButtonClicked() {
-        giftListView.sendLike()
     }
 }
 
@@ -735,45 +702,6 @@ extension VoiceRoomRootView: BarrageStreamViewDelegate {
             return nil
         }
         return CustomBarrageCell(barrage: barrage)
-    }
-}
-
-// MARK: - GiftListViewDelegate
-
-extension VoiceRoomRootView: GiftListViewDelegate {
-    func onRecharge(giftListView view: GiftListView) {
-        TUIGiftStore.shared.giftCloudServer.rechargeBalance { [weak self] error, balance in
-            guard let self = self else { return }
-            if error == .noError {
-                view.setBalance(balance)
-            } else {
-                manager.toastSubject.send(.balanceInsufficientText)
-            }
-        }
-    }
-    
-    func onSendGift(giftListView view: GiftListView, giftModel: TUIGift, giftCount: Int) {
-        
-        let anchorInfo = manager.roomState.ownerInfo
-        let receiver = TUIGiftUser()
-        receiver.userId = anchorInfo.userId
-        receiver.userName = anchorInfo.name
-        receiver.avatarUrl = anchorInfo.avatarUrl
-        receiver.level = "0"
-        
-        let selfInfo = manager.userState.selfInfo
-        TUIGiftStore.shared.giftCloudServer.sendGift(sender: selfInfo.userId,
-                                                     receiver: receiver.userId,
-                                                     giftModel: giftModel,
-                                                     giftCount: giftCount) { [weak self] error, balance in
-            guard let self = self else { return }
-            if error == .noError {
-                view.sendGift(giftModel: giftModel, giftCount: giftCount, receiver: receiver)
-                view.setBalance(balance)
-            } else {
-                giftListView.makeToast(.balanceInsufficientText)
-            }
-        }
     }
 }
 

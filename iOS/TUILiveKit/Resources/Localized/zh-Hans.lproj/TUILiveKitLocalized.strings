@@ -216,6 +216,7 @@
 "live.endLive.onBattle.alert.endBattle" = "断开PK";
 
 // MARK: - Error Toast
+"live.error.pushing" = "正在直播中，请稍后再试。";
 "live.error.success" = "操作成功";
 "live.error.failed" = "操作错误";
 "live.error.freqLimit" = "请求被限频，请稍后重试";
@@ -306,3 +307,9 @@
 "live.streamDashboard.audio.info" = "音频信息";
 "live.streamDashboard.audio.sampleRate" = "采样率";
 "live.streamDashboard.audio.bitrate" = "码率";
+
+"live.error.connection.notexit" = "邀请连线的房间不存在";
+"live.error.connection.connecting" = "被邀请连线的房间已在邀请列表或者已连线。";
+"live.error.connection.connectingOtherRoom" = "被邀请连线的房间与其他房间连线中。";
+"live.error.connection.full" = "当前连线人数已达最大限制。";
+"live.error.connection.retry" = "内部错误，推荐重试一次。";

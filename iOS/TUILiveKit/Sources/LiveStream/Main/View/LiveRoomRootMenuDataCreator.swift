@@ -97,10 +97,25 @@ extension LiveRoomRootMenuDataCreator {
             let selfUserId = manager.userState.selfInfo.userId
             let isSelfInBattle = manager.battleState.battleUsers.contains(where: { $0.userId == selfUserId })
             if isSelfInBattle {
-                self.confirmToExitBattle(manager: manager, routerManager: routerManager)
+                self.confirmToExitBattle(manager: manager, routerManager: routerManager, coreView: coreView)
             } else {
+                let isOnDisplayResult = manager.battleState.isOnDisplayResult
+                let isSelfInConnection = manager.coHostManager.state.connectedUsers.contains(where: { $0.userId == selfUserId })
+                guard !isOnDisplayResult && isSelfInConnection else {
+                    manager.toastSubject.send(.battleDisableText)
+                    return
+                }
+                let config = TUIBattleConfig()
+                config.duration = battleDuration
+                config.needResponse = true
+                config.extensionInfo = ""
+                
                 let requestUserIds = manager.coHostState.connectedUsers.map { $0.userId }
-                manager.battleManager.requestBattle(userIds: requestUserIds, timeout: battleRequestTimeout)
+                coreView.requestBattle(config: config, userIdList: requestUserIds, timeout: battleRequestTimeout) { (battleId, battleUserList) in
+                    manager.battleManager.onRequestBattle(battleId: battleId, battleUserList: battleUserList)
+                } onError: { _, _ in
+                    
+                }
             }
         }
         battle.bindStateClosure = { button, cancellableSet in
@@ -170,7 +185,7 @@ extension LiveRoomRootMenuDataCreator {
         
         var setting = LSButtonMenuInfo(normalIcon: "live_anchor_setting_icon")
         setting.tapAction = { sender in
-            let settingModel = self.generateAnchorSettingModel(manager: manager, routerManager: routerManager)
+            let settingModel = self.generateAnchorSettingModel(manager: manager, routerManager: routerManager, coreView: coreView)
             routerManager.router(action: .present(.featureSetting(settingModel)))
         }
         menus.append(setting)
@@ -183,7 +198,7 @@ extension LiveRoomRootMenuDataCreator {
         return menus
     }
     
-    private func confirmToExitBattle(manager: LiveStreamManager, routerManager: LSRouterManager) {
+    private func confirmToExitBattle(manager: LiveStreamManager, routerManager: LSRouterManager, coreView: LiveCoreView) {
         var items: [ActionItem] = []
         let designConfig = ActionItemDesignConfig(lineWidth: 7, titleColor: .redColor)
         designConfig.backgroundColor = .white
@@ -194,7 +209,10 @@ extension LiveRoomRootMenuDataCreator {
                                       defaultButtonInfo: (String.confirmEndBattleText, .redColor)) { _ in
                 routerManager.router(action: .routeTo(.anchor))
             } defaultClosure: { alertPanel in
-                manager.battleManager.exitBattle()
+                coreView.terminateBattle(battleId: manager.battleState.battleId) {
+                    manager.battleManager.onExitBattle()
+                } onError: { _, _ in
+                }
                 routerManager.router(action: .routeTo(.anchor))
             }
             routerManager.router(action: .present(.alert(info: alertInfo)))
@@ -204,7 +222,8 @@ extension LiveRoomRootMenuDataCreator {
     }
     
     func generateAnchorSettingModel(manager: LiveStreamManager,
-                                    routerManager: LSRouterManager) -> LSFeatureClickPanelModel {
+                                    routerManager: LSRouterManager,
+                                    coreView: LiveCoreView) -> LSFeatureClickPanelModel {
         let model = LSFeatureClickPanelModel()
         model.itemSize = CGSize(width: 56.scale375(), height: 76.scale375())
         model.itemDiff = 12.scale375()
@@ -235,8 +254,9 @@ extension LiveRoomRootMenuDataCreator {
         model.items.append(LSFeatureItem(normalTitle: .flipText,
                                        normalImage: .liveBundleImage("live_video_setting_flip"),
                                        designConfig: designConfig,
-                                       actionClosure: { _ in
-            manager.switchCamera()
+                                       actionClosure: { [weak coreView] _ in
+            guard let coreView = coreView else { return }
+            coreView.startCamera(useFrontCamera: !coreView.mediaState.isFrontCamera) {} onError: { code, msg in }
         }))
         model.items.append(LSFeatureItem(normalTitle: .videoParametersText,
                                        normalImage: .liveBundleImage("live_setting_video_parameters"),

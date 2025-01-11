@@ -40,14 +40,6 @@ class LSRoomEngineService {
     func removeLiveListManagerObserver(_ observer: TUILiveListManagerObserver) {
         liveListManager?.removeObserver(observer)
     }
-    
-    func addBattleObserver(_ observer: TUILiveBattleObserver) {
-        roomEngine.getLiveBattleManager().addObserver(observer)
-    }
-    
-    func removeBattleObserver(_ observer: TUILiveBattleObserver) {
-        roomEngine.getLiveBattleManager().removeObserver(observer)
-    }
 }
 
 // MARK: - RoomAPI
@@ -122,31 +114,6 @@ extension LSRoomEngineService {
 extension LSRoomEngineService {
     func setLocalVideoView(view: UIView) {
         roomEngine.setLocalVideoView(view: view)
-    }
-    
-    func openLocalCamera(isFront: Bool, quality: TUIVideoQuality) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            roomEngine.openLocalCamera(isFront: isFront, quality: quality) {
-                continuation.resume()
-            } onError: { code, message in
-                continuation.resume(throwing: InternalError(error: code, message: message))
-            }
-        }
-    }
-    
-    func closeLocalCamera() {
-        roomEngine.closeLocalCamera()
-    }
-    
-    func switchCamera(frontCamera: Bool) {
-        roomEngine.getMediaDeviceManager().switchCamera(frontCamera)
-    }
-    
-    func setCameraMirror(enable: Bool) {
-        let params = TRTCRenderParams()
-        params.mirrorType = enable ? .enable : .disable
-        trtcCloud.setLocalRenderParams(params)
-        trtcCloud.setVideoEncoderMirror(enable)
     }
     
     func enableGravitySensor(enable: Bool) {

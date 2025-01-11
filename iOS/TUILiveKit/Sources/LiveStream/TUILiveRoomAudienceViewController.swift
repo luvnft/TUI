@@ -12,14 +12,7 @@ import RTCRoomEngine
 
 public class TUILiveRoomAudienceViewController: UIViewController {
     
-    private lazy var audienceView: AudienceView = {
-        let view = AudienceView(roomId: roomId, manager: manager, routerManager: routerManager, coreView: coreView)
-        view.livingView.onButtonTap = { [weak self] in
-            guard let self = self else { return }
-            FloatWindow.shared.showFloatWindow(controller: self)
-        }
-        return view
-    }()
+    private lazy var audienceView = AudienceView(roomId: roomId, manager: manager, routerManager: routerManager, coreView: coreView)
     
     private let coreView = LiveCoreView()
     
@@ -28,6 +21,7 @@ public class TUILiveRoomAudienceViewController: UIViewController {
     private let manager = LiveStreamManager()
     private let routerManager: LSRouterManager = LSRouterManager()
     private var cancellableSet = Set<AnyCancellable>()
+    private lazy var likeManager = LikeManager(roomId: roomId)
     private lazy var routerCenter: LSRouterControlCenter = {
         let rootRoute: LSRoute = .audience
         let routerCenter = LSRouterControlCenter(rootViewController: self, rootRoute: rootRoute, routerManager: routerManager, manager: manager, coreView: coreView)
@@ -61,7 +55,7 @@ public class TUILiveRoomAudienceViewController: UIViewController {
         subscribeRouter()
         constructViewHierarchy()
         activateConstraints()
-        subscribeToast()
+        subscribeSubjects()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -82,13 +76,29 @@ extension TUILiveRoomAudienceViewController {
         routerCenter.subscribeRouter()
     }
     
-    private func subscribeToast() {
+    private func subscribeSubjects() {
         manager.toastSubject
             .receive(on: RunLoop.main)
             .sink { [weak self] message in
                 guard let self = self else { return }
                 view.makeToast(message)
             }.store(in: &cancellableSet)
+        
+        manager.floatWindowSubject
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                FloatWindow.shared.showFloatWindow(controller: self)
+            }
+            .store(in: &cancellableSet)
+        
+        manager.likeSubject
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                likeManager.sendLike()
+            }
+            .store(in: &cancellableSet)
     }
     
     private func constructViewHierarchy() {
@@ -107,6 +117,10 @@ extension TUILiveRoomAudienceViewController {
 extension TUILiveRoomAudienceViewController: FloatWindowDataSource {
     func getRoomId() -> String {
         roomId
+    }
+    
+    func getOwnerId() -> String {
+        coreView.roomState.ownerInfo.userId
     }
 
     func getCoreView() -> LiveCoreView {

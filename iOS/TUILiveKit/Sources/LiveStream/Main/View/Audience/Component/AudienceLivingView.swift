@@ -12,7 +12,6 @@ import Combine
 import LiveStreamCore
 
 class AudienceLivingView: RTCBaseView {
-    var onButtonTap: (() -> Void)?
     // MARK: - private property.
     private let manager: LiveStreamManager
     private let routerManager: LSRouterManager
@@ -24,7 +23,7 @@ class AudienceLivingView: RTCBaseView {
     private lazy var ownerInfoPublisher  = manager.subscribeRoomState(StateSelector(keyPath: \LSRoomState.ownerInfo))
     
     private let liveInfoView: LiveInfoView = {
-        let view = LiveInfoView()
+        let view = LiveInfoView(enableFollow: VideoLiveKit.createInstance().enableFollow)
         view.mm_h = 32.scale375()
         view.backgroundColor = UIColor.g1.withAlphaComponent(0.4)
         view.layer.cornerRadius = view.mm_h * 0.5
@@ -47,9 +46,7 @@ class AudienceLivingView: RTCBaseView {
     private lazy var floatWindowButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(.liveBundleImage("live_floatwindow_open_icon"), for: .normal)
-        button.isUserInteractionEnabled = true
-        button.addTarget(self, action: #selector(floatWindowButtonClick), for: .touchUpInside)
-        
+        button.addTarget(self, action: #selector(onFloatWindowButtonClick), for: .touchUpInside)
         return button
     }()
     
@@ -91,7 +88,7 @@ class AudienceLivingView: RTCBaseView {
     }()
 
     private lazy var giftDisplayView: GiftPlayView = {
-        let view = GiftPlayView(groupId: "store.roomState.roomId")
+        let view = GiftPlayView(roomId: manager.roomState.roomId)
         view.delegate = self
         return view
     }()
@@ -155,13 +152,13 @@ class AudienceLivingView: RTCBaseView {
         
 #if RTCube_APPSTORE
         reportBtn.snp.makeConstraints({ make in
-            make.centerY.equalTo(showFloatWindowImageView)
-            make.right.equalTo(showFloatWindowImageView.snp.left).offset(-8)
+            make.centerY.equalTo(floatWindowButton)
+            make.right.equalTo(floatWindowButton.snp.left).offset(-8)
             make.width.height.equalTo(24.scale375Width())
         })
         audienceListView.snp.makeConstraints { make in
             make.trailing.equalTo(reportBtn.snp.leading).offset(-4.scale375Width())
-            make.centerY.equalTo(showFloatWindowImageView)
+            make.centerY.equalTo(floatWindowButton)
             make.height.equalTo(24.scale375())
             make.width.equalTo(116.scale375())
         }
@@ -222,7 +219,6 @@ extension AudienceLivingView {
             .receive(on: RunLoop.main)
             .sink { [weak self] roomId in
                 guard let self = self else { return }
-                self.giftDisplayView.setRoomId(roomId: roomId)
                 self.initComponentView()
             }
             .store(in: &cancellableSet)
@@ -248,8 +244,8 @@ extension AudienceLivingView {
         }
     }
     
-    @objc func floatWindowButtonClick(){
-        onButtonTap?()
+    @objc func onFloatWindowButtonClick() {
+        manager.floatWindowSubject.send()
     }
 
     @objc func leaveButtonClick() {
