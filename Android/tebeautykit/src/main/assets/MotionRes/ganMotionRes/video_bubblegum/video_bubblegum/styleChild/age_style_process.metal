@@ -1,4 +1,4 @@
-//  Copyright © 2019 tencent. All rights reserved.
+//  Copyright © 2019 LUV NFT. All rights reserved.
 
 #include <metal_stdlib>
 

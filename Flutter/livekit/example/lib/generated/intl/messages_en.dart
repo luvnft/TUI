@@ -43,8 +43,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_save": MessageLookupByLibrary.simpleMessage("Save"),
         "app_set_nickname": MessageLookupByLibrary.simpleMessage("Name"),
         "app_tencent_cloud":
-            MessageLookupByLibrary.simpleMessage("Tencent Cloud"),
-        "app_trtc": MessageLookupByLibrary.simpleMessage("Tencent RTC"),
+            MessageLookupByLibrary.simpleMessage("LUV NFT Cloud"),
+        "app_trtc": MessageLookupByLibrary.simpleMessage("LUV NFT LIVE"),
         "app_user_id": MessageLookupByLibrary.simpleMessage("User ID")
       };
 }
