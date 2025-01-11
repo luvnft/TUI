@@ -19,11 +19,11 @@ class LiveStreamManager {
     
     public let toastSubject = PassthroughSubject<String, Never>()
     public let likeSubject = PassthroughSubject<Void, Never>()
+    public let floatWindowSubject = PassthroughSubject<Void, Never>()
     
     class Context {
         let service = LSRoomEngineService()
         let coHostService = LSCoHostServiceImpl()
-        let battleService = EngineBattleService()
         
         private(set) lazy var roomManager = LSRoomManager(context: self)
         private(set) lazy var userManager = LSUserManager(context: self)
@@ -36,7 +36,6 @@ class LiveStreamManager {
         private(set) lazy var engineObserver = LSRoomEngineObserver(context: self)
         private(set) lazy var liveListObserver = LSLiveListObserver(context: self)
         private(set) lazy var coHostObserver = LSCoHostObserver(context: self)
-        private(set) lazy var battleObserver = LSBattleManagerObserver(context: self)
         
         let toastSubject: PassthroughSubject<String, Never>
         
@@ -44,14 +43,12 @@ class LiveStreamManager {
             self.toastSubject = toastSubject
             service.addEngineObserver(engineObserver)
             service.addLiveListManagerObserver(liveListObserver)
-            service.addBattleObserver(battleObserver)
             coHostService.addConnectionObserver(coHostObserver)
         }
         
         deinit {
             service.removeEngineObserver(engineObserver)
             service.removeLiveListManagerObserver(liveListObserver)
-            service.removeBattleObserver(battleObserver)
             coHostService.removeConnectionObserver(coHostObserver)
         }
     }
@@ -132,24 +129,12 @@ extension LiveStreamManager {
         context.mediaManager.subscribeState(selector)
     }
     
-    func switchCamera() {
-        context.mediaManager.switchCamera()
-    }
-    
-    func setCameraMirror() {
-        context.mediaManager.setCameraMirror()
-    }
-    
     func setLocalVideoView(_ view: UIView) {
         context.mediaManager.setLocalVideoView(view: view)
     }
     
-    func openLocalCamera() {
-        context.mediaManager.openLocalCamera()
-    }
-    
-    func closeLocalCamera() {
-        context.mediaManager.closeLocalCamera()
+    func onCameraOpened() {
+        context.mediaManager.onCameraOpened()
     }
     
     func updateVideoQuality(quality: TUIVideoQuality) {
@@ -266,5 +251,13 @@ extension LiveStreamManager {
     
     func subscribeBattleState<Value>(_ selector: StateSelector<LSBattleState, Value>) -> AnyPublisher<Value, Never> {
         context.battleManager.subscribeState(selector)
+    }
+}
+
+extension LiveStreamManager: GiftListPanelDataSource {
+    func getAnchorInfo() -> GiftUser {
+        let owner = roomState.ownerInfo
+        let giftUser = GiftUser(userId: owner.userId, name: owner.name, avatarUrl: owner.avatarUrl)
+        return giftUser
     }
 }

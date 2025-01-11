@@ -124,6 +124,9 @@ extension TUILiveListViewController {
                         if FloatWindow.shared.getCurrentRoomId() == liveInfo.roomInfo.roomId {
                             FloatWindow.shared.resumeLive(atViewController: self.navigationController ?? self)
                             return
+                        } else if let ownerId = FloatWindow.shared.getRoomOwnerId(), ownerId == TUILogin.getUserID() {
+                            view.makeToast(.pushingToReturnText)
+                            return
                         } else {
                             FloatWindow.shared.releaseFloatWindow()
                         }
@@ -134,7 +137,8 @@ extension TUILiveListViewController {
                     case .voice:
                         let vc = TUIVoiceRoomViewController(roomId: liveInfo.roomInfo.roomId, behavior: isOwner ? .autoCreate : .join)
                         self.navigationController?.pushViewController(vc, animated: true)
-                    case .live:
+                    default:
+                        // How to determine room type without roomId
                         if isOwner {
                             let vc = TUILiveRoomAnchorViewController(roomId: liveInfo.roomInfo.roomId, needPrepare: false)
                             self.navigationController?.pushViewController(vc, animated: true)
@@ -142,8 +146,6 @@ extension TUILiveListViewController {
                             let vc = TUILiveRoomAudienceViewController(liveInfo: liveInfo)
                             self.navigationController?.pushViewController(vc, animated: true)
                         }
-                        break
-                    default: break
                     }
                 }
             }
@@ -153,4 +155,5 @@ extension TUILiveListViewController {
 
 extension String {
     fileprivate static let liveTitleText = localized("live.room.list.live")
+    fileprivate static let pushingToReturnText = localized("live.error.pushing")
 }

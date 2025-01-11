@@ -1,4 +1,5 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">LUV NFT LIVE</string>
     <string name="app_main_title">LUV NFT Live Cloud Audio and Video</string>
     <string name="app_user_id">User ID</string>
@@ -11,6 +12,20 @@
     <string name="app_tips_user_name">Only Chinese characters, letters, numbers, and underscores allowed, 1–20 characters</string>
     <string name="app_toast_register_success_and_logging_in">Registration successful</string>
     <string name="app_toast_failed_to_set">Setting failed: %s</string>
+=======
+    <string name="app_name">TUILiveKit</string>
+    <string name="app_main_title">腾讯云音视频</string>
+    <string name="app_user_id">用户ID</string>
+    <string name="app_hint_user_id">请输入用户ID</string>
+    <string name="app_btn_login">登录</string>
+    <string name="app_user_id_is_empty">用户ID不能为空</string>
+    <string name="app_toast_login_fail">登录失败</string>
+    <string name="app_title_register">注册</string>
+    <string name="app_hint_user_name">请输入用户名</string>
+    <string name="app_tips_user_name">仅限中文、字母、数字和下划线，1–20个字</string>
+    <string name="app_toast_register_success_and_logging_in">注册成功</string>
+    <string name="app_toast_failed_to_set">设置失败: %1$s</string>
+>>>>>>> f5633bde531b2b2c856925454440f8da12aa618a
 
     <string name="app_custom_name_1">Paul</string>
     <string name="app_custom_name_2">Sanji</string>
