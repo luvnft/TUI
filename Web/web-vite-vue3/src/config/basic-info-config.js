@@ -12,7 +12,7 @@ import LibGenerateTestUserSig from './lib-generate-test-usersig-es.min';
  *
  */
 
-export const SDKAPPID = 0;
+export const SDKAPPID = 20018607;
 
 /**
  * Encryption key for calculating signature, which can be obtained in the following steps:
@@ -29,7 +29,7 @@ export const SDKAPPID = 0;
  * Document: https://intl.cloud.tencent.com/document/product/647/35166#Server
  *
  */
-export const SDKSECRETKEY = '';
+export const SDKSECRETKEY = '45add49fabcc1a9d0cc728e50ae1fe947f4260c788a28e63492ac20735a0943e';
 
 /**
  * Signature expiration time, which should not be too short
